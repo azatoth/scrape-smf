@@ -1,0 +1,13 @@
+{
+  "name": "scrape-smf",
+  "version": "1.0.0",
+  "main": "scrape.js",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^7.0.0",
+    "image-downloader": "^4.0.2",
+    "luxon": "^1.25.0",
+    "mkdirp": "^1.0.4",
+    "scrape-it": "^5.2.4"
+  }
+}
