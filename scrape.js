@@ -6,6 +6,7 @@ const path = require("path");
 const fs = require("fs");
 const { DateTime } = require("luxon");
 const { promisify } = require("util");
+const parser = require("any-date-parser");
 program
   .version("1.0.0")
   .description("Scrapes SMF thread and downloads the images")
@@ -27,12 +28,19 @@ async function main() {
     }
     await mkdirp(path.join(options.out, post.poster));
 
+    const meta = path.join(
+      options.out,
+      post.poster,
+      `META_${post.post.date}.json`
+    );
+    console.log(meta);
     await writeFile(
-      path.join(options.out, post.poster, "META.json"),
+      meta,
       JSON.stringify({
         poster: post.poster,
         date: post.post.date,
         description: post.post.text,
+        images: post.post.images.map((i) => i.txt),
       })
     );
     for await (const image of post.post.images) {
@@ -60,10 +68,8 @@ async function scrapeSMF(url) {
             date: {
               selector: ".keyinfo .smalltext",
               convert: (str) => {
-                // return postRE.exec(str).groups.date;
-                return DateTime.fromFormat(
-                  postRE.exec(str).groups.date,
-                  "D hh:mm a"
+                return DateTime.fromJSDate(
+                  Date.fromString(postRE.exec(str).groups.date, "en-US")
                 )
                   .toUTC()
                   .toISO({ suppressSeconds: true, suppressMilliseconds: true });
