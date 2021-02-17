@@ -22,9 +22,9 @@ const commandThread = async (url, outdir, options) => {
     if (options.filter && options.filter !== post.poster) {
       continue;
     }
-    await mkdirp(path.join(outdir, post.poster));
+    await mkdirp(path.join(outdir, post.poster, post.post.date));
 
-    const meta = path.join(outdir, post.poster, `META_${post.post.date}.json`);
+    const meta = path.join(outdir, post.poster, post.post.date, "META.json");
     spinners.add(meta, { text: meta });
     await writeFile(
       meta,
@@ -35,11 +35,17 @@ const commandThread = async (url, outdir, options) => {
         images: post.post.images.map((i) => i.txt),
       })
     );
+    spinners.succeed(meta);
 
     await Promise.all(
       post.post.images.map((image) => {
         return new Promise((resolve, reject) => {
-          const target = path.join(outdir, post.poster, image.txt);
+          const target = path.join(
+            outdir,
+            post.poster,
+            post.post.date,
+            image.txt
+          );
           spinners.add(target, { text: target });
           if (fs.existsSync(target)) {
             spinners.succeed(target, {
@@ -53,13 +59,15 @@ const commandThread = async (url, outdir, options) => {
                 spinners.succeed(target);
                 resolve();
               })
-              .on("fail", reject)
+              .on("fail", () => {
+                spinners.fail(target);
+                reject();
+              })
               .pipe(fs.createWriteStream(target));
           }
         });
       })
     );
-    spinners.succeed(meta);
   }
 };
 exports.commandThread = commandThread;
