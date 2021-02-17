@@ -10,6 +10,7 @@
     "download": "^8.0.0",
     "luxon": "^1.25.0",
     "mkdirp": "^1.0.4",
+    "nanoid": "^3.1.20",
     "scrape-it": "^5.3.1",
     "spinnies": "^0.5.1"
   },

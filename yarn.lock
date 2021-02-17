@@ -1980,6 +1980,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nanoid@npm:^3.1.20":
+  version: 3.1.20
+  resolution: "nanoid@npm:3.1.20"
+  bin:
+    nanoid: bin/nanoid.cjs
+  checksum: 4788d36edcfec7bb32ddf33ed8f1f46df2867f70e9b1993bb131f7677e04ead2b621e5d614d2736308be18db1d54208d8ab207b4586bd5b052f71fb9d4c0ebea
+  languageName: node
+  linkType: hard
+
 "natural-compare@npm:^1.4.0":
   version: 1.4.0
   resolution: "natural-compare@npm:1.4.0"
@@ -2502,6 +2511,7 @@ __metadata:
     eslint: ^7.19.0
     luxon: ^1.25.0
     mkdirp: ^1.0.4
+    nanoid: ^3.1.20
     prettier: ^2.2.1
     scrape-it: ^5.3.1
     spinnies: ^0.5.1
